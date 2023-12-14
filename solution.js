@@ -1,17 +1,29 @@
 import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
+import readline from "readline";
+
+const app = express();
+const port = 3000;
+
+const the_pss ="";
+
+const readline = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+readline.question('Pss?', name => {
+  the_pss = name;
+});
 
 const db = new pg.Client({
   user: "postgres",
   host: "localhost",
   database: "world",
-  password: "2424",
+  password: ${the_pss},
   port: 5432,
 });
-
-const app = express();
-const port = 3000;
 
 db.connect();
 
