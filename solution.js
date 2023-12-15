@@ -1,44 +1,16 @@
 import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
-import readline from "readline";
+import inquirer from "inquirer";
 
 const app = express();
 const port = 3000;
 
-const the_pss ="";
+var the_code = "";
+var endp = "";
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+var quiz = [];
 
-rl.question('Pss?', name => {
-  the_pss = name;
-});
-
-const conex = {
-  user: "postgres",
-  host: "localhost",
-  database: "world",
-  password: the_pss,
-  port: 5432,
-};
-
-const db = new pg.Client(conex);
-
-db.connect();
-
-let quiz = [];
-db.query("SELECT * FROM capitals", (err, res) => {
-  if (err) {
-    console.error("Error executing query", err.stack);
-  } else {
-    quiz = res.rows;
-    console.log(quiz);
-  }
-  db.end();
-});
 
 let totalCorrect = 0;
 
@@ -81,4 +53,53 @@ async function nextQuestion() {
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
+
+  inquirer.prompt([{
+    type: 'input',
+    name: 'code',
+    message: 'Pss?:'
+  },{
+    type: 'input',
+    name: 'endpo',
+    message: 'End?:'
+  }])
+  .then((answer) => {
+    the_code = answer.code;
+    endp = answer.endpo;
+    console.log("Here I am");
+  })
+  .then(lets_connect)
+  .catch((error) => {
+    if (error.isTtyError) {
+      console.log("Here I am 2");
+    } else {
+      console.log("Here I am 3");
+    }
+  });
+
 });
+
+function lets_connect() {
+  var conex = {
+    user: "postgres",
+    host: endp,
+    database: "world",
+    password: the_code,
+    port: 5432,
+  };
+
+  console.log("Working");
+
+  const db = new pg.Client(conex);
+  db.connect();
+
+
+  db.query("SELECT * FROM capitals", (err, res) => {
+    if (err) {
+      console.error("Error executing query", err.stack);
+    } else {
+      quiz = res.rows;
+    }
+    db.end();
+  });
+}
