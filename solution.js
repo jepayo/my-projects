@@ -4,7 +4,7 @@ import pg from "pg";
 import inquirer from "inquirer";
 
 const app = express();
-const port = 3000;
+const port = 5432;
 
 var the_code = "";
 var endp = "";
