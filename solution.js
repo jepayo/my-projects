@@ -8,22 +8,24 @@ const port = 3000;
 
 const the_pss ="";
 
-const readline = readline.createInterface({
+const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-readline.question('Pss?', name => {
+rl.question('Pss?', name => {
   the_pss = name;
 });
 
-const db = new pg.Client({
+const conex = {
   user: "postgres",
   host: "localhost",
   database: "world",
-  password: ${the_pss},
+  password: the_pss,
   port: 5432,
-});
+};
+
+const db = new pg.Client(conex);
 
 db.connect();
 
