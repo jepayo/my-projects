@@ -4,7 +4,7 @@ import pg from "pg";
 import inquirer from "inquirer";
 
 const app = express();
-const port = 5432;
+const port = 80;
 
 var the_code = "";
 var endp = "";
@@ -83,7 +83,7 @@ function lets_connect() {
   var conex = {
     user: "postgres",
     host: endp,
-    database: "world",
+    database: "postgres",
     password: the_code,
     port: 5432,
   };
